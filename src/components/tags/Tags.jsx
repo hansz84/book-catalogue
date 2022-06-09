@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import AppContext from "../../store/app-context";
 import styles from "./tags.module.css";
 
 const Tags = () => {
   const [categories, setCategories] = useState([]);
+  const appCtx = useContext(AppContext);
 
   useEffect(() => {
     fetch("/api/fee-assessment-categories")
@@ -11,11 +13,15 @@ const Tags = () => {
       .catch((error) => console.log(error));
   }, []);
 
+  const handleClick = (id) => {
+    appCtx.setCategoryId(id);
+  }
+
   return (
     <div className={styles.tags}>
       {categories &&
         categories.map((category) => (
-          <span className={styles.tagItem} key={category.id}>
+          <span className={styles.tagItem} key={category.id} onClick={() => handleClick(category.id)}>
             {category.name}
           </span>
         ))}

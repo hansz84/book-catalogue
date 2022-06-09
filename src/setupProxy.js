@@ -8,6 +8,7 @@ module.exports = function (app) {
       changeOrigin: true,
       pathRewrite: {
         "^/api/fee-assessment-categories": "/fee-assessment-categories",
+        "^/api/fee-assessment-books": "/fee-assessment-books",
       },
     })
   );

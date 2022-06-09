@@ -1,13 +1,16 @@
 .tags {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
 }
 
 .tagItem {
+  background-color: rgb(188, 248, 165);
   font-size: 12px;
-  border: solid 1px #eee;
-  border-radius: 5px;
+  font-weight: bold;
+  border: solid 1px rgb(3, 215, 3);
+  border-radius: 8px;
   padding: 5px;
+  margin: auto 10px;
   cursor: pointer;
 }
