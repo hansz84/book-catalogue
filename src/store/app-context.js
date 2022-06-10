@@ -1,30 +1,34 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react";
 
 const AppContext = React.createContext({
   categoryId: 0,
   reload: false,
-  setCategoryId: () => {}
-})
+  setCategoryId: () => {},
+});
 
-export const AppContextProvider = props => {
+export const AppContextProvider = (props) => {
   const [reload, setReload] = useState(false);
-  let catId = 0
+  const [catId, setCatId] = useState(0);
 
-  const handleCategory = id => {
-    catId = id
-  }
+  const handleCategory = (id) => {
+    setCatId(id);
+  };
 
   useEffect(() => {
-    setReload(prevState => prevState.categoryId === catId ? false : true)
-  }, [catId])
+    setReload(true);
+  }, [catId]);
 
   const contextValue = {
     categoryId: catId,
     reload: reload,
-    setCategoryId: handleCategory
-  }
+    setCategoryId: handleCategory,
+  };
 
-  return <AppContext.Provider value={contextValue}>{props.children}</AppContext.Provider>
-}
+  return (
+    <AppContext.Provider value={contextValue}>
+      {props.children}
+    </AppContext.Provider>
+  );
+};
 
 export default AppContext;
