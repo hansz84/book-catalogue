@@ -6,17 +6,17 @@ import styles from "./books.module.css";
 
 const Books = () => {
   const [books, setBooks] = useState([]);
-  const [state, setState] = useState({
-    totalPages: 0,
-    currentPage: 0,
-  });
+  const [currentBooks, setCurrentBooks] = useState([]);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const appCtx = useContext(AppContext);
 
   const size = 10;
-  const { totalPages, currentPage } = state;
 
   const handlePagination = (current) => {
-    setState({ ...state, currentPage: current });
+    setCurrentPage(current);
+    let endSize = books.length < size ? books.length : current * size;
+    setCurrentBooks(books.slice((current - 1) * size, endSize));
   };
 
   useEffect(() => {
@@ -30,13 +30,15 @@ const Books = () => {
         .then((res) => res.json())
         .then((data) => {
           setBooks(data);
-          setState({ ...state, totalPages: Math.ceil(data.length / size) });
+          setTotalPages(Math.ceil(data.length / size));
+          let endSize = books.length < size ? books.length : currentPage * size;
+          setCurrentBooks(books.slice((currentPage - 1) * size, endSize));
         })
         .catch((error) => console.log(error));
 
       appCtx.reload = false;
     }
-  }, [appCtx, state]);
+  }, [appCtx, currentPage, totalPages]);
 
   return (
     <>
@@ -53,9 +55,10 @@ const Books = () => {
         {books.length <= 0 && (
           <p>Please click on category above to view books.</p>
         )}
-        {books && books.map((book) => <Book key={book.id} book={book} />)}
+        {currentBooks.length > 0 &&
+          currentBooks.map((book) => <Book key={book.id} book={book} />)}
       </div>
-      {books.length > 0 && (
+      {currentBooks.length > 0 && (
         <Pagination
           total={totalPages}
           current={currentPage}
